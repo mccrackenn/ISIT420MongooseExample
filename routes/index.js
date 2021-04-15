@@ -10,7 +10,7 @@ const ToDos = require("../ToDos");
 // edited to include my non-admin, user level account and PW on mongo atlas
 // and also to include the name of the mongo DB that the collection
 const dbURI =
- "mongodb+srv://bcuser:bcuser@cluster0-nbt1n.mongodb.net/ToDosDB?retryWrites=true&w=majority";
+ "your mongo connection string here";
 
 // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
 // by default, you need to set it to false.
