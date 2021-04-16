@@ -5,12 +5,12 @@ var router = express.Router();
 // .ADO.Net is a wrapper over raw SQL server interface
 const mongoose = require("mongoose");
 
-const ToDos = require("../ToDos");
+const Brews = require("../Brews");
 
 // edited to include my non-admin, user level account and PW on mongo atlas
 // and also to include the name of the mongo DB that the collection
 const dbURI =
- "your mongo connection string here";
+ "mongodb+srv://<username>:<password>@<YourCluster>/<YourDB>?retryWrites=true&w=majority";
 
 // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
 // by default, you need to set it to false.
@@ -37,10 +37,10 @@ router.get('/', function(req, res) {
   res.sendFile('index.html');
 });
 
-/* GET all ToDos */
-router.get('/ToDos', function(req, res) {
+/* GET allBrews */
+router.get('/Brews', function(req, res) {
   // find {  takes values, but leaving it blank gets all}
-  ToDos.find({}, (err, AllToDos) => {
+ Brews.find({}, (err, AllToDos) => {
     if (err) {
       console.log(err);
       res.status(500).send(err);
@@ -53,11 +53,11 @@ router.get('/ToDos', function(req, res) {
 
 
 /* post a new ToDo and push to Mongo */
-router.post('/NewToDo', function(req, res) {
+router.post('/NewBrew', function(req, res) {
 
-    let oneNewToDo = new ToDos(req.body);  // call constuctor in ToDos code that makes a new mongo ToDo object
+    let oneNewBrew = Brews(req.body);  // call constuctor inBrews code that makes a new mongo ToDo object
     console.log(req.body);
-    oneNewToDo.save((err, todo) => {
+    oneNewBrew.save((err, todo) => {
       if (err) {
         res.status(500).send(err);
       }
@@ -70,7 +70,7 @@ router.post('/NewToDo', function(req, res) {
 
 
 router.delete('/DeleteToDo/:id', function (req, res) {
-  ToDos.deleteOne({ _id: req.params.id }, (err, note) => { 
+ Brews.deleteOne({ _id: req.params.id }, (err, note) => { 
     if (err) {
       res.status(404).send(err);
     }
@@ -80,7 +80,7 @@ router.delete('/DeleteToDo/:id', function (req, res) {
 
 
 router.put('/UpdateToDo/:id', function (req, res) {
-  ToDos.findOneAndUpdate(
+ Brews.findOneAndUpdate(
     { _id: req.params.id },
     { title: req.body.title, detail: req.body.detail, priority: req.body.priority,   completed: req.body.completed },
    { new: true },
@@ -93,10 +93,10 @@ router.put('/UpdateToDo/:id', function (req, res) {
   });
 
 
-  /* GET one ToDos */
+  /* GET oneBrews */
 router.get('/FindToDo/:id', function(req, res) {
   console.log(req.params.id );
-  ToDos.find({ _id: req.params.id }, (err, oneToDo) => {
+ Brews.find({ _id: req.params.id }, (err, oneToDo) => {
     if (err) {
       console.log(err);
       res.status(500).send(err);

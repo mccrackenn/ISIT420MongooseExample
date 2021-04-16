@@ -1,9 +1,9 @@
 
-function ToDo(pTitle, pDetail, pPriority) {
-    this.title= pTitle;
-    this.detail = pDetail;
-    this.priority = pPriority;
-    this.completed = false;
+function Brews(pBrewName, pBrewer, pBrewerLocation) {
+    this.BrewName = pBrewName;
+    this.Brewer = pBrewer;
+    this.BrewerLocation = pBrewerLocation;
+    this.Tried = false;
   }
   var ClientNotes = [];  // our local copy of the cloud data
 
@@ -11,17 +11,17 @@ function ToDo(pTitle, pDetail, pPriority) {
 document.addEventListener("DOMContentLoaded", function (event) {
 
     document.getElementById("submit").addEventListener("click", function () {
-        var tTitle = document.getElementById("title").value;
-        var tDetail = document.getElementById("detail").value;
-        var tPriority = document.getElementById("priority").value;
-        var oneToDo = new ToDo(tTitle, tDetail, tPriority);
+        var tBrewName = document.getElementById("brewName").value;
+        var tBrewer = document.getElementById("brewer").value;
+        var tLocation = document.getElementById("brewerLocation").value;
+        var newBrew = new Brews(tBrewName, tBrewer, tLocation);
 
         $.ajax({
-            url: '/NewToDo' ,
+            url: '/NewBrew' ,
             method: 'POST',
             dataType: 'json',
             contentType: 'application/json',
-            data: JSON.stringify(oneToDo),
+            data: JSON.stringify(newBrew),
             success: function (result) {
                 console.log("added new note")
             }
@@ -126,7 +126,7 @@ ul.innerHTML = "";  // clears existing list so we don't duplicate old ones
 
 //var ul = document.createElement('ul')
 
-$.get("/ToDos", function(data, status){  // AJAX get
+$.get("/Brews", function(data, status){  // AJAX get
     ClientNotes = data;  // put the returned server json data into our local array
 
     // sort array by one property
@@ -138,7 +138,7 @@ $.get("/ToDos", function(data, status){  // AJAX get
         var li = document.createElement('li');
         ul.appendChild(li);
 
-        li.innerHTML=li.innerHTML + index + ": " + " Priority: " + item.priority + "  " + item.title + ":  " + item.detail + " Done? "+ item.completed;
+        li.innerHTML=li.innerHTML + index + ": " + " Brew Name: " + item.BrewName + "--- \tBrewer: " + item.Brewer + "---\tBrewer Location:  " + item.BrewerLocation + "--- \tTried It? "+ item.Tried;
     }
 });
 }
