@@ -37,18 +37,22 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     document.getElementById("delete").addEventListener("click", function () {
         
-        var whichToDo = document.getElementById('deleteTitle').value;
+        var whichBrew = document.getElementById('deleteTitle').value;
+        console.log(whichBrew);
         var idToDelete = "";
         for(i=0; i< ClientNotes.length; i++){
-            if(ClientNotes[i].title === whichToDo) {
+            if(ClientNotes[i].BrewName === whichBrew) {
+                
                 idToDelete = ClientNotes[i]._id;
+                console.log(idToDelete);
            }
         }
         
         if(idToDelete != "")
         {
+            console.log(idToDelete);
                      $.ajax({  
-                    url: 'DeleteToDo/'+ idToDelete,
+                    url: 'DeleteBrew/'+ idToDelete,
                     type: 'DELETE',  
                     contentType: 'application/json',  
                     success: function (response) {  
@@ -65,19 +69,27 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
 
 
-
     document.getElementById("msubmit").addEventListener("click", function () {
-        var tTitle = document.getElementById("mtitle").value;
-        var tDetail = document.getElementById("mdetail").value;
-        var tPriority = document.getElementById("mpriority").value;
-        var oneToDo = new ToDo(tTitle, tDetail, tPriority);
-        oneToDo.completed =  document.getElementById("mcompleted").value;
-        
+        var tBrew = document.getElementById("mBrew").value;
+        var tBrewer = document.getElementById("mBrewer").value;
+        var tLocation = document.getElementById("mLocation").value;
+        var oneBrew = new Brews(tBrew, tBrewer, tLocation);
+        oneBrew.Tried = document.getElementById("mTried").value;
+        console.log('Updated Brew: ');
+        console.log(oneBrew);
+
+        // idToFind = "";
+        // for(i=0; i< ClientNotes.length; i++){
+        //     if(ClientNotes[i].BrewName === tBrew) {
+        //         idToFind = ClientNotes[i]._id;
+        //         console.log('ID to find and Update ' + idToFind);
+        //    }
+        // }
             $.ajax({
-                url: 'UpdateToDo/'+idToFind,
+                url: 'UpdateBrew/'+idToFind,
                 type: 'PUT',
                 contentType: 'application/json',
-                data: JSON.stringify(oneToDo),
+                data: JSON.stringify(oneBrew),
                     success: function (response) {  
                         console.log(response);  
                     },  
@@ -85,8 +97,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         console.log('Error in Operation');  
                     }  
                 });  
-            
-       
     });
 
 
@@ -94,22 +104,22 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var idToFind = ""; // using the same value from the find operation for the modify
     // find one to modify
     document.getElementById("find").addEventListener("click", function () {
-        var tTitle = document.getElementById("modTitle").value;
+        var tTitle = document.getElementById("modBrew").value;
+        console.log(tTitle);
          idToFind = "";
         for(i=0; i< ClientNotes.length; i++){
-            if(ClientNotes[i].title === tTitle) {
+            if(ClientNotes[i].BrewName === tTitle) {
                 idToFind = ClientNotes[i]._id;
+                console.log(idToFind);
            }
         }
-        console.log(idToFind);
  
-        $.get("/FindToDo/"+ idToFind, function(data, status){ 
-            console.log(data[0].title);
-            document.getElementById("mtitle").value = data[0].title;
-            document.getElementById("mdetail").value= data[0].detail;
-            document.getElementById("mpriority").value = data[0].priority;
-            document.getElementById("mcompleted").value = data[0].completed;
-           
+        $.get("/FindBrew/"+ idToFind, function(data, status){ 
+            document.getElementById("mBrew").value = data[0].BrewName;
+            document.getElementById("mBrewer").value= data[0].Brewer;
+            document.getElementById("mLocation").value = data[0].BrewerLocation;
+            document.getElementById("mTried").value = data[0].Tried;
+            console.log(data[0]);
 
         });
     });
@@ -133,8 +143,8 @@ $.get("/Brews", function(data, status){  // AJAX get
     ClientNotes.sort(compare);  // see compare method below
     console.log(data);
     //listDiv.appendChild(ul);
-    ClientNotes.forEach(ProcessOneToDo); // build one li for each item in array
-    function ProcessOneToDo(item, index) {
+    ClientNotes.forEach(ProcessBrew); // build one li for each item in array
+    function ProcessBrew(item, index) {
         var li = document.createElement('li');
         ul.appendChild(li);
 

@@ -10,7 +10,7 @@ const Brews = require("../Brews");
 // edited to include my non-admin, user level account and PW on mongo atlas
 // and also to include the name of the mongo DB that the collection
 const dbURI =
- "mongodb+srv://<username>:<password>@<YourCluster>/<YourDB>?retryWrites=true&w=majority";
+ "mongodb+srv://CarsonAdmin:950628471Rrb!@carsoncluster.sijjb.mongodb.net/myfirstDatabase?retryWrites=true&w=majority";
 
 // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
 // by default, you need to set it to false.
@@ -57,51 +57,55 @@ router.post('/NewBrew', function(req, res) {
 
     let oneNewBrew = Brews(req.body);  // call constuctor inBrews code that makes a new mongo ToDo object
     console.log(req.body);
-    oneNewBrew.save((err, todo) => {
+    oneNewBrew.save((err, brew) => {
       if (err) {
         res.status(500).send(err);
       }
       else {
-      console.log(todo);
-      res.status(201).json(todo);
+      console.log(brew);
+      res.status(201).json(brew);
       }
     });
 });
 
 
-router.delete('/DeleteToDo/:id', function (req, res) {
- Brews.deleteOne({ _id: req.params.id }, (err, note) => { 
+router.delete('/DeleteBrew/:id', function (req, res) {
+ Brews.deleteOne({ _id: req.params.id }, (err, brew) => { 
     if (err) {
       res.status(404).send(err);
     }
-    res.status(200).json({ message: "ToDo successfully deleted" });
+    res.status(200).json({ message: "Brew successfully deleted" });
   });
 });
 
 
-router.put('/UpdateToDo/:id', function (req, res) {
- Brews.findOneAndUpdate(
+router.put('/UpdateBrew/:id', function (req, res) {
+
+  Brews.findOneAndUpdate(
     { _id: req.params.id },
-    { title: req.body.title, detail: req.body.detail, priority: req.body.priority,   completed: req.body.completed },
+    { BrewName: req.body.BrewName, 
+     Brewer: req.body.Brewer , 
+     BrewerLocation: req.body.BrewerLocation ,   
+     Tried: req.body.Tried },
    { new: true },
-    (err, todo) => {
+    (err, brew) => {
       if (err) {
         res.status(500).send(err);
     }
-    res.status(200).json(todo);
+    res.status(200).json(brew);
     })
   });
 
 
   /* GET oneBrews */
-router.get('/FindToDo/:id', function(req, res) {
+router.get('/FindBrew/:id', function(req, res) {
   console.log(req.params.id );
- Brews.find({ _id: req.params.id }, (err, oneToDo) => {
+ Brews.find({ _id: req.params.id }, (err, oneBrew) => {
     if (err) {
       console.log(err);
       res.status(500).send(err);
     }
-    res.status(200).json(oneToDo);
+    res.status(200).json(oneBrew);
   });
 });
 
