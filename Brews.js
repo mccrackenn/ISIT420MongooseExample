@@ -23,11 +23,15 @@ const OrdersSchema = new Schema({
   PricePaid: {
     type: Number,
     required: true
+  },
+  HourPunch: {
+    type: Number,
+    required: false
+  },
+  DayPunch: {
+    type:Number,
+    required:false
   }
-  // HourPurch: {
-  //   type: Number,
-  //   required: true
-  // }
 });
 
 module.exports = mongoose.model("Orders", OrdersSchema);
