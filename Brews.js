@@ -7,23 +7,27 @@ const mongoose = require("mongoose");
 // schema will enforce consistency in all our documents (records)
 const Schema = mongoose.Schema;
 
-const BrewSchema = new Schema({
-  BrewName: {
+const OrdersSchema = new Schema({
+  StoreID: {
     type: String,
     required: true
   },
-  Brewer: {
-    type: String,
+  SalesPersonID: {
+    type: Number,
     required: true
   },
-  Tried: {
-    type: Boolean,
+  CdID: {
+    type: Number,
     required: true
   },
-  BrewerLocation: {
-    type: String,
+  PricePaid: {
+    type: Number,
     required: true
   }
+  // HourPurch: {
+  //   type: Number,
+  //   required: true
+  // }
 });
 
-module.exports = mongoose.model("Brews", BrewSchema);
+module.exports = mongoose.model("Orders", OrdersSchema);

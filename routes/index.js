@@ -5,12 +5,12 @@ var router = express.Router();
 // .ADO.Net is a wrapper over raw SQL server interface
 const mongoose = require("mongoose");
 
-const Brews = require("../Brews");
+const Orders = require("../Brews");
 
 // edited to include my non-admin, user level account and PW on mongo atlas
 // and also to include the name of the mongo DB that the collection
 const dbURI =
- "mongodb+srv://CarsonAdmin:950628471Rrb!@carsoncluster.sijjb.mongodb.net/myfirstDatabase?retryWrites=true&w=majority";
+ "mongodb+srv://neiluser:userneil@cluster0.rts44.mongodb.net/FavoriteBars?retryWrites=true&w=majority";
 
 // Make Mongoose use `findOneAndUpdate()`. Note that this option is `true`
 // by default, you need to set it to false.
@@ -38,36 +38,62 @@ router.get('/', function(req, res) {
 });
 
 /* GET allBrews */
-router.get('/Brews', function(req, res) {
-  // find {  takes values, but leaving it blank gets all}
- Brews.find({}, (err, AllToDos) => {
-    if (err) {
-      console.log(err);
-      res.status(500).send(err);
-    }
-    res.status(200).json(AllToDos);
-  });
-});
+// router.get('/Brews', function(req, res) {
+//   // find {  takes values, but leaving it blank gets all}
+//  Brews.find({}, (err, AllToDos) => {
+//     if (err) {
+//       console.log(err);
+//       res.status(500).send(err);
+//     }
+//     res.status(200).json(AllToDos);
+//   });
+// });
 
 
 
 
 /* post a new ToDo and push to Mongo */
-router.post('/NewBrew', function(req, res) {
+// router.post('/NewBrew', function(req, res) {
 
-    let oneNewBrew = Brews(req.body);  // call constuctor inBrews code that makes a new mongo ToDo object
-    console.log(req.body);
-    oneNewBrew.save((err, brew) => {
-      if (err) {
-        res.status(500).send(err);
-      }
-      else {
-      console.log(brew);
-      res.status(201).json(brew);
-      }
-    });
+//     let oneNewBrew = Brews(req.body);  // call constuctor inBrews code that makes a new mongo ToDo object
+//     //console.log(req.body);
+//     oneNewBrew.save((err, brew) => {
+//       if (err) {
+//         res.status(500).send(err);
+//       }
+//       else {
+//       console.log(brew);
+//       res.status(201).json(brew);
+//       }
+//     });
+// });
+router.post('/NewOrder', function(req, res){
+  let oneNewOrder=Orders(req.body);
+  console.log(req.body);
+  //oneNewOrder.save((err, order) => {
+  if (err) {
+    res.status(500).send(err);
+  }
+  else {
+  console.log("Worked");
+  res.status(201).json("Great success!");
+  }
+  
 });
 
+router.post('/FiveHundred', function(req, res){
+  let oneNewOrder=Orders(req.body);
+  console.log(req.body);
+  oneNewOrder.save((err, order) => {
+  if (err) {
+    res.status(500).send(err);
+  }
+  else {
+  console.log(order);
+  res.status(201).json(order);
+  }
+  });
+});
 
 router.delete('/DeleteBrew/:id', function (req, res) {
  Brews.deleteOne({ _id: req.params.id }, (err, brew) => { 
